@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gen Z at Work | LearningBox</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    :root {
+      --navy: #000976;
+      --deep-navy: #000976;
+      --blue: #26AADC;
+      --yellow: #F4BD18;
+      --orange: #FF731E;
+      --ink: #000976;
+      --muted: #6b7280;
+      --paper: #F3F4F6;
+      --line: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+     /* *{
+    border:2px solid red;
+  } */
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: system-ui, sans-serif; }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1, h2, h3, h4, nav, button, a { font-family: 'Montserrat', sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .hero { position: relative; overflow: hidden; padding: 150px 0 98px; color: white; text-align: center; background: linear-gradient(135deg, #000976 0%, #001499 50%, #000976 100%); }
+    .hero:after { content: ''; position: absolute; width: 390px; height: 390px; right: -160px; bottom: -250px; border-radius: 50%; background: rgba(38,170,220,.16); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 19px; padding: 6px 13px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; color: var(--yellow); background: rgba(255,255,255,.08); font-size: 14px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+    .hero h1 { position: relative; z-index: 1;  margin: 0 auto 17px; font-size: clamp(36px, 5vw, 60px); line-height: 1.1; letter-spacing: -.04em; }
+    .hero h1 strong { color: var(--orange); }
+    .hero p { max-width: 620px; margin: 0 auto; color: #d1d5db; font-size: 20px; line-height: 1.65; }
+    .section { padding: 78px 0; }
+    .section-heading { margin: 0 auto 36px; text-align: center; }
+    .section-heading h2 { margin-bottom: 10px; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; letter-spacing: -.03em; }
+    .section-heading p { color: var(--muted); font-size: 16px; line-height: 1.65; }
+    .reality-grid {  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .reality-card { min-height: 174px; padding: 25px 22px; border: 1px solid var(--line); border-radius: 15px; background: white; box-shadow: 0 8px 18px rgba(12,25,82,.05); }
+    .reality-card:nth-child(2) { background: #edf8fc; }
+    .icon { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-bottom: 17px; border-radius: 8px; background: #fff7ed; color: var(--orange); }
+    .reality-card:nth-child(2) .icon { background: #d9f3fc; color: var(--blue); }
+    .reality-card:nth-child(3) .icon { background: #eff0ff; color: var(--navy); }
+    .reality-card h3 { margin-bottom: 9px; font-size: 18px; }
+    .reality-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 52px; }
+    .photo-grid img { display: block; width: 100%; height: 270px; border-radius: 15px; object-fit: cover; }
+    .scripts { margin: 54px 0 10px; padding: 48px 54px;  color: white; background: var(--navy); box-shadow: 0 8px 32px rgba(0,9,118,.25); }
+    .scripts-grid { display: grid; grid-template-columns: 1fr .9fr; align-items: center; gap: 55px; }
+    .scripts h2 { max-width: 390px; margin-bottom: 13px; color: white; font-size: 31px; line-height: 1.08; }
+    .scripts h2 em { color: var(--yellow); }
+    .scripts-copy { max-width: 430px; color: #d5ddff; font-size: 16px; line-height: 1.7; }
+    .checks { display: grid; gap: 13px; margin-top: 24px; color: white; font-size: 14px; font-weight: 600; }
+    .checks span { display: flex; align-items: center; gap: 9px; }
+    .check { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; color: var(--yellow); background: rgba(244,189,24,.18); }
+    .reply-box { padding: 19px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(5,5,91,.7); }
+    .reply-box .reply-label { margin: 0 0 6px; color: #8994cb; font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .reply-box p { margin: 0 0 19px; color: #e9edff; font-size: 14px; line-height: 1.45; }
+    .reply-box .actual { margin-bottom: 0; font-weight: 700; }
+    .reply-box .reply-label.actual-label { color: var(--yellow); }
+    .products { padding-top: 61px; }
+    .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 870px; margin: 0 auto; }
+    .product { display: flex; flex-direction: column; min-height: 470px; padding: 28px 25px 20px; border: 1px solid #e2e6eb; border-top: 6px solid var(--orange); border-radius: 17px; background: white; box-shadow: 0 12px 22px rgba(21,35,80,.12); }
+    .product.yellow { border-top-color: var(--yellow); }
+    .product-icon { display: grid; place-items: center; width: 38px; height: 38px; margin-bottom: 17px; border-radius: 9px; background: #fff7ed; color: var(--orange); }
+    .product.yellow .product-icon { background: #fffbed; color: #bc9200; }
+    .product h3 { margin-bottom: 5px; font-size: 22px; }
+    .product .tag { margin-bottom: 22px; color: var(--orange); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .product.yellow .tag { color: #c39b00; }
+    .product h4 { margin-bottom: 10px; color: var(--navy); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+    .product p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .product ul { display: grid; gap: 11px; margin: 10px 0 24px; padding: 0; list-style: none; color: var(--muted); font-size: 14px; line-height: 1.4; }
+    .product li { display: flex; gap: 8px; }
+    .product li:before { content: '✓'; color: var(--orange); font-weight: 800; }
+    .price-row { display: flex; align-items: baseline; gap: 6px; margin-top: auto; padding-top: 18px; border-top: 1px solid #edf0f4; }
+    .price { color: var(--navy); font-size: 30px; font-weight: 800; }
+    .price-note { color: #9299a9; font-size: 12px; }
+    .product-button { display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 14px; padding: 12px; border: 0; border-radius: 7px; color: white; background: var(--orange); font-size: 14px; font-weight: 800; cursor: pointer; }
+    .product.yellow .product-button { background: var(--navy); }
+    @media (max-width: 800px) {
+      .container { width: min(100% - 34px, 600px); }
+      .hero { padding: 130px 0 75px; }
+      .hero p { font-size: 18px; }
+      .reality-grid, .scripts-grid, .product-grid { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: 1fr; margin-top: 28px; }
+      .photo-grid img { height: 220px; }
+      .scripts { padding: 34px 25px; }
+      .scripts-grid { gap: 28px; }
+      .scripts h2 { font-size: 27px; }
+      .product { min-height: 0; }
+    }
+  </style>
+  <!-- Scope shared Tailwind components so Bootstrap page content keeps its styling. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      important: ':is(#site-header, #site-footer)',
+      corePlugins: { preflight: false },
+      theme: { extend: {
+        colors: { primary: '#F4BD18', 'brand-navy': '#000976' },
+        fontFamily: { display: ['Montserrat', 'sans-serif'], sans: ['system-ui', 'sans-serif'] }
+      } }
+    };
+  </script>
+  <style>
+    :is(#site-header, #site-footer) { line-height: 1.5; }
+    :is(#site-header, #site-footer) *, :is(#site-header, #site-footer) ::before, :is(#site-header, #site-footer) ::after { border-width: 0; border-style: solid; }
+    #site-header button { padding: 0; background: transparent; }
+    #site-header img { display: block; max-width: 100%; height: auto; }
+    #site-footer p { margin-bottom: 0; }
+  </style>
+  <script src="templates/layout.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <header id="hero" class="hero">
+    <div class="container">
+      <span class="eyebrow"><span class="material-symbols-outlined" style="font-size:12px">bolt</span> For Gen Z and early career</span>
+      <h1>Corporate India is loud.<br><strong>Here is your mute button.</strong></h1>
+      <p>Survive toxic managers, "urgent" weekend WhatsApps, and confusing expectations without losing your mind or your job.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container-fluid">
+        <div class="section-heading">
+          <h2>The Indian Fresher Reality Check</h2>
+          <p>Sound familiar? We have been there. The system is rigid, but you can learn the cheat codes.</p>
+        </div>
+        <div class="reality-grid px-2 px-md-5">
+          <article class="reality-card"><span class="icon material-symbols-outlined">phone_android</span><h3>The 9 PM "Quick Call"</h3><p>When your manager texts you on WhatsApp on Saturday night about a deliverable due "EOD Monday".</p></article>
+          <article class="reality-card"><span class="icon material-symbols-outlined">local_cafe</span><h3>The "We're a Family" Trap</h3><p>Company culture that expects uncompensated late nights and weekend hustle because everyone else is doing it.</p></article>
+          <article class="reality-card"><span class="icon material-symbols-outlined">psychology</span><h3>The "Sir/Ma'am" Hierarchy</h3><p>Struggling to share your actually good ideas because you are the youngest person in a room full of egos.</p></article>
+        </div>
+        <div class="photo-grid">
+          <img src="assets/xxIN88dMkizopZB27vOJQ6G0DM conv (1).jpeg" alt="Young professionals collaborating around a laptop">
+          <img src="assets/i (1).webp" alt="Team planning a project in an office">
+        </div>
+        <div class="scripts">
+          <div class="scripts-grid">
+            <div>
+              <h2>No <em>Gyaan.</em> Just Exact Scripts.</h2>
+              <p class="scripts-copy">You do not need another generic webinar on "professionalism." You need to know exactly what to type when you are refusing to work on your designated day off.</p>
+              <div class="checks"><span><span class="check material-symbols-outlined">check</span> Copy-paste email templates</span><span><span class="check material-symbols-outlined">check</span> Scripts for hard conversations</span><span><span class="check material-symbols-outlined">check</span> Boundary-setting without getting fired</span></div>
+            </div>
+            <div class="reply-box">
+              <p class="reply-label">What you want to reply:</p>
+              <p><em>"I am not doing this right now, I have a life."</em></p>
+              <p class="reply-label actual-label">What you actually say:</p>
+              <p class="actual">"I can prioritize this task on Monday morning. If it is urgent for today, I will need to deprioritize [Other Project]."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section products">
+      <div class="container">
+        <div class="section-heading"><h2>Your Unfair Advantage</h2><p>Get instant access to verbatim scripts, conflict resolution templates, and diagnostic tools to navigate work on your terms.</p></div>
+        <div class="product-grid">
+          <article class="product">
+            <span class="product-icon material-symbols-outlined">business_center</span>
+            <h3>Gen Z @ Work Toolkit</h3>
+            <span class="tag">Digital download &amp; templates</span>
+            <h4>Inside the toolkit:</h4>
+            <ul><li>Exactly what to say to strict, old-school managers</li><li>How to ask for a raise or promotion without sounding entitled</li><li>Navigate toxic office politics while protecting your mental health</li><li>Saying "no" to weekend work and late calls with email templates</li></ul>
+            <div class="price-row"><span class="price">₹999</span><span class="price-note">one-time</span></div>
+            <a class="product-button" href="https://www.learningbox.in/checkout.php?slug=gen-z-work-toolkit">Get the toolkit instantly <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span></a>
+          </article>
+          <article class="product yellow">
+            <span class="product-icon material-symbols-outlined">monitor_heart</span>
+            <h3>Relationship Diagnostic</h3>
+            <span class="tag">Interactive assessment</span>
+            <h4>Decode the silent frustrations</h4>
+            <p>Stop overthinking every interaction. Is it you, or is it them? Our diagnostic pinpoints the exact breakdown in your workplace dynamic and tells you how to fix it.</p>
+            <ul><li>Get absolute clarity on trust and expectation gaps</li><li>Receive a detailed personalised action report to turn things around</li></ul>
+            <div class="price-row"><span class="price">₹999</span><span class="price-note">launch price</span></div>
+            <a class="product-button" href="https://www.learningbox.in/checkout.php?slug=relationship-health-diagnostic">Take the diagnosis <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
