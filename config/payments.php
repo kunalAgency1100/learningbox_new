@@ -1,6 +1,10 @@
 <?php
 // Prefer an absolute path outside public_html, configured in the hosting environment.
 $privateConfig = getenv('LEARNINGBOX_PAYMENT_CONFIG') ?: dirname(__DIR__, 2) . '/learningbox-payments.php';
+$localConfig = dirname(__DIR__) . '/learningbox-payments.php';
+if (!getenv('LEARNINGBOX_PAYMENT_CONFIG') && !is_file($privateConfig) && is_file($localConfig)) {
+    $privateConfig = $localConfig;
+}
 $settings = is_file($privateConfig) ? require $privateConfig : [];
 return array_merge([
     'key_id' => getenv('RAZORPAY_KEY_ID') ?: 'rzp_test_TZb21hKYtx026s',

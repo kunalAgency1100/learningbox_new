@@ -8,6 +8,14 @@ function esc($value): string { return htmlspecialchars((string)$value, ENT_QUOTE
 function money($amount): string { return 'INR ' . number_format($amount / 100, 2); }
 function commerce_session(): void {
     if (session_status() !== PHP_SESSION_ACTIVE) {
+        // XAMPP may point sessions at C:\xampp\tmp, which can be unwritable
+        // for a local PHP development server. Use the system temp directory
+        // when the configured session directory is unavailable.
+        $sessionPath = session_save_path();
+        if ($sessionPath !== '' && !is_writable($sessionPath)) {
+            $fallbackPath = sys_get_temp_dir();
+            if (is_writable($fallbackPath)) session_save_path($fallbackPath);
+        }
         session_start(['cookie_httponly' => true, 'cookie_secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'cookie_samesite' => 'Lax']);
     }
     if (empty($_SESSION['commerce_csrf'])) $_SESSION['commerce_csrf'] = bin2hex(random_bytes(32));
@@ -71,6 +79,9 @@ function razorpay(string $method, string $path, ?array $body = null): array {
         // Log diagnostic codes only: never gateway bodies, credentials or buyer data.
         error_log('Razorpay request failed: HTTP ' . $code . ', cURL ' . $curlError);
         if ($code === 401 || $code === 403) throw new PaymentGatewayException('The payment provider could not authenticate this store. Please contact LearningBox.');
+        if (in_array($_SERVER['HTTP_HOST'] ?? '', ['127.0.0.1:8000', 'localhost:8000'], true)) {
+            throw new PaymentGatewayException('Local Razorpay request failed: HTTP ' . $code . ', cURL ' . $curlError . '. Check internet access and Test Mode keys.');
+        }
         throw new PaymentGatewayException('Unable to connect to the payment provider. Please try again shortly.');
     }
     return $result;

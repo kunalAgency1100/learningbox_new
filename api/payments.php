@@ -4,7 +4,16 @@ header('Content-Type: application/json');
 header('Cache-Control: no-store');
 header('Referrer-Policy: no-referrer');
 try {
-    $action = $_GET['action'] ?? '';
+    $action = is_string($_GET['action'] ?? null) ? $_GET['action'] : '';
+    $data = null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $raw = file_get_contents('php://input', false, null, 0, 8193);
+        if (strlen($raw) > 8192) throw new InvalidArgumentException('Request too large.');
+        $data = json_decode($raw, true);
+        if (!is_array($data)) throw new InvalidArgumentException('Send a JSON object.');
+        // Some hosting rules strip query strings. Accept the action from JSON too.
+        if ($action === '' && is_string($data['action'] ?? null)) $action = $data['action'];
+    }
     if (!in_array($action, ['create', 'verify', 'status'], true)) {
         http_response_code(404);
         throw new InvalidArgumentException('Unknown endpoint.');
@@ -17,10 +26,6 @@ try {
     }
     commerce_session();
     if ($method === 'POST') {
-        $raw = file_get_contents('php://input', false, null, 0, 8193);
-        if (strlen($raw) > 8192) throw new InvalidArgumentException('Request too large.');
-        $data = json_decode($raw, true);
-        if (!is_array($data)) throw new InvalidArgumentException('Send a JSON object.');
         check_csrf($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
     }
     require dirname(__DIR__) . '/config/db.php';
@@ -29,10 +34,19 @@ try {
         $buyer = buyer_details($data);
         $slug = $data['slug'] ?? '';
         if (!is_string($slug)) throw new InvalidArgumentException('Invalid product.');
+        // Product 1 has a guided preview page. Its preview/payment request is
+        // always charged at INR 1 (100 paise), regardless of browser input or
+        // the regular catalogue price.
+        $productOnePreview = $slug === 'product01';
+        $lookupSlug = $productOnePreview ? 'relationship-health-diagnostic' : $slug;
         $stmt = $pdo->prepare('SELECT * FROM products WHERE slug=? AND active=1');
-        $stmt->execute([$slug]);
+        $stmt->execute([$lookupSlug]);
         $product = $stmt->fetch();
         if (!$product) throw new InvalidArgumentException('This product is unavailable.');
+        if ($productOnePreview) {
+            $product['amount'] = 100;
+            $product['name'] = 'Relationship Health Diagnostic — Product 1 Preview';
+        }
         // Reuse the session order on retries; neither price nor currency comes from the browser.
         $fingerprint = hash('sha256', json_encode([$product['id'], $product['amount'], $buyer]));
         $purchase = null;
@@ -41,7 +55,9 @@ try {
             if (!in_array($purchase['status'], ['pending', 'failed', 'authorized'], true) || !$purchase['razorpay_order_id']) $purchase = null;
         }
         if (!$purchase) {
-            if (time() - ($_SESSION['last_order_at'] ?? 0) < 10) {
+            $lastOrderAt = (int)($_SESSION['last_order_at'] ?? 0);
+            $isLocalDevelopment = in_array($_SERVER['HTTP_HOST'] ?? '', ['127.0.0.1:8000', 'localhost:8000'], true);
+            if (!$isLocalDevelopment && $lastOrderAt > 0 && $lastOrderAt <= time() && time() - $lastOrderAt < 10) {
                 http_response_code(429);
                 throw new InvalidArgumentException('Please wait a few seconds before trying again.');
             }

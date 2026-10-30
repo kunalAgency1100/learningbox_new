@@ -3,11 +3,20 @@ const button = document.getElementById('pay-button');
 const message = document.getElementById('checkout-message');
 const statusLink = document.getElementById('status-link');
 async function paymentApi(action, body) {
-    const response = await fetch(`api/payments.php?action=${action}`, {
+    const apiBase = form.dataset.apiBase || 'api/payments.php';
+    const endpoint = new URL(apiBase, window.location.href);
+    endpoint.searchParams.set('action', action);
+    const response = await fetch(endpoint.toString(), {
         method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRF-Token': form.dataset.csrf},
-        body: JSON.stringify(body)
+        body: JSON.stringify({...body, action})
     });
-    const data = await response.json();
+    const raw = await response.text();
+    let data;
+    try {
+        data = JSON.parse(raw);
+    } catch (error) {
+        throw new Error(`Payment API returned ${response.status} instead of JSON. Check: ${endpoint.toString()}`);
+    }
     if (!response.ok || !data.success) throw new Error(data.message || 'Payment request could not be completed.');
     return data;
 }
@@ -20,7 +29,9 @@ form.addEventListener('submit', async event => {
         if (typeof Razorpay === 'undefined') throw new Error('Secure checkout could not load. Please refresh and try again.');
         const buyer = Object.fromEntries(new FormData(form));
         const order = await paymentApi('create', {...buyer, slug: form.dataset.slug});
-        const statusUrl = `payment-success.php?token=${encodeURIComponent(order.token)}`;
+        const statusBase = form.dataset.statusBase || 'payment-success.php';
+        const statusUrl = `${statusBase}?token=${encodeURIComponent(order.token)}`;
+        const successUrl = form.dataset.successUrl || statusUrl;
         statusLink.href = statusUrl;
         statusLink.classList.remove('hidden');
         const checkout = new Razorpay({
@@ -31,12 +42,14 @@ form.addEventListener('submit', async event => {
                 confirming = true;
                 button.disabled = true;
                 message.textContent = 'Confirming your payment…';
+                let paymentConfirmed = false;
                 try {
                     await paymentApi('verify', {...result, token: order.token});
+                    paymentConfirmed = true;
                 } catch (error) {
                     message.textContent = 'Confirmation is taking longer than expected. Opening your purchase status…';
                 }
-                window.location.assign(statusUrl);
+                window.location.assign(paymentConfirmed ? successUrl : statusUrl);
             },
             modal: {ondismiss: () => {
                 if (!confirming) {

@@ -9,6 +9,12 @@ CREATE TABLE IF NOT EXISTS products (
  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Product 1 is shown through products/product01/ and charged INR 1 there.
+INSERT INTO products (name, slug, description, amount, active)
+VALUES ('Relationship Health Diagnostic', 'relationship-health-diagnostic', 'Product 1 preview and verification payment.', 99900, 1)
+ON DUPLICATE KEY UPDATE active = 1;
+
 CREATE TABLE IF NOT EXISTS purchases (
  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  token CHAR(64) NOT NULL UNIQUE,
