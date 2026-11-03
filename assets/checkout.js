@@ -31,7 +31,14 @@ form.addEventListener('submit', async event => {
         const order = await paymentApi('create', {...buyer, slug: form.dataset.slug});
         const statusBase = form.dataset.statusBase || 'payment-success.php';
         const statusUrl = `${statusBase}?token=${encodeURIComponent(order.token)}`;
-        const successUrl = form.dataset.successUrl || statusUrl;
+        const libraryPages = {
+            'digital-playbook-for-managers': 'product-2-library.php',
+            'gen-z-work-toolkit': 'product-3-library.php'
+        };
+        const libraryPage = libraryPages[form.dataset.slug];
+        const successUrl = form.dataset.successUrl || (libraryPage
+            ? `${libraryPage}?token=${encodeURIComponent(order.token)}`
+            : statusUrl);
         statusLink.href = statusUrl;
         statusLink.classList.remove('hidden');
         const checkout = new Razorpay({

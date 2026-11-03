@@ -12,8 +12,18 @@ CREATE TABLE IF NOT EXISTS products (
 
 -- Product 1 is shown through products/product01/ and charged INR 1 there.
 INSERT INTO products (name, slug, description, amount, active)
-VALUES ('Relationship Health Diagnostic', 'relationship-health-diagnostic', 'Product 1 preview and verification payment.', 99900, 1)
-ON DUPLICATE KEY UPDATE active = 1;
+VALUES ('Relationship Health Diagnostic', 'relationship-health-diagnostic', 'Product 1 preview and verification payment.', 100, 1)
+ON DUPLICATE KEY UPDATE amount = 100, active = 1;
+
+-- Product 2 includes all four PDFs in products/product_02 and is charged INR 1.
+INSERT INTO products (name, slug, description, amount, active)
+VALUES ('Digital Playbook for Managers', 'digital-playbook-for-managers', 'All four Product 2 manager playbook PDFs.', 100, 1)
+ON DUPLICATE KEY UPDATE amount = 100, active = 1;
+
+-- Product 3 is charged INR 1.
+INSERT INTO products (name, slug, description, amount, active)
+VALUES ('Gen Z @ Work Toolkit', 'gen-z-work-toolkit', 'Product 3 workplace navigation and growth toolkit.', 100, 1)
+ON DUPLICATE KEY UPDATE amount = 100, active = 1;
 
 CREATE TABLE IF NOT EXISTS purchases (
  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

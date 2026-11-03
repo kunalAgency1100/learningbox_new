@@ -24,6 +24,13 @@ if (!$product) {
     exit;
 }
 
+// Flagship products are currently offered at INR 1 each.
+if (in_array($product['slug'], [
+    'relationship-health-diagnostic',
+    'digital-playbook-for-managers',
+    'gen-z-work-toolkit',
+], true)) $product['amount'] = 100;
+
 // Presentation only: product names, descriptions and amounts remain database-driven.
 $checkoutThemes = [
     'relationship-health-diagnostic' => ['tone' => 'diagnostic', 'icon' => 'health_and_safety'],

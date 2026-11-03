@@ -102,7 +102,7 @@
 
           <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-3xl font-bold text-brand-navy dark:text-white">₹999</span>
+              <span class="text-3xl font-bold text-brand-navy dark:text-white">₹1</span>
               <span class="text-[10px] text-accent-orange font-bold bg-orange-50 dark:bg-orange-900/30 px-2.5 py-1 rounded-full uppercase tracking-wider">Launch Price</span>
             </div>
             <p class="text-xs text-gray-400 dark:text-gray-500 mb-6">Best for: First-time users, self-awareness.</p>
@@ -157,15 +157,19 @@
               <ul class="space-y-3">
                 <li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <span class="material-symbols-outlined text-accent-blue flex-shrink-0" style="font-size:1.1rem;">check_circle</span>
-                  <span>Manager Conversation Handouts</span>
+                  <span>LB 2 - 1 - Pre-Read Guide for Managers.pdf</span>
                 </li>
                 <li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <span class="material-symbols-outlined text-accent-blue flex-shrink-0" style="font-size:1.1rem;">check_circle</span>
-                  <span>30-Day Manager Reset Plan</span>
+                  <span>LB 2 - 3 - Manager Conversation Guide.pdf</span>
                 </li>
                 <li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <span class="material-symbols-outlined text-accent-blue flex-shrink-0" style="font-size:1.1rem;">check_circle</span>
-                  <span>Pre-Read Guide</span>
+                  <span>LB 2 - 4 - Manager Reflection &amp; Practice Workbook.pdf</span>
+                </li>
+                <li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
+                  <span class="material-symbols-outlined text-accent-blue flex-shrink-0" style="font-size:1.1rem;">check_circle</span>
+                  <span>lb2-5.pdf</span>
                 </li>
               </ul>
             </div>
@@ -173,13 +177,13 @@
 
           <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-3xl font-bold text-brand-navy dark:text-white">₹1,999</span>
+              <span class="text-3xl font-bold text-brand-navy dark:text-white">₹1</span>
               <span class="text-xs text-gray-400 font-medium tracking-wide">one-time</span>
             </div>
             <p class="text-xs text-gray-400 dark:text-gray-500 mb-6">Best for: Leaders of Gen Z teams.</p>
             
-            <a href="https://www.learningbox.in/checkout.php?slug=digital-playbook-for-managers" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-accent-blue to-[#1E8CB5] text-white font-bold hover:shadow-[0_4px_20px_rgba(38,170,220,0.4)] transition-all flex items-center justify-center gap-2 group">
-              Get Playbook
+            <a href="product-2-checkout.php" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-accent-blue to-[#1E8CB5] text-white font-bold hover:shadow-[0_4px_20px_rgba(38,170,220,0.4)] transition-all flex items-center justify-center gap-2 group">
+              View Product 2
               <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </a>
           </div>
@@ -242,13 +246,13 @@
 
           <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-3xl font-bold text-brand-navy dark:text-white">₹999</span>
+              <span class="text-3xl font-bold text-brand-navy dark:text-white">₹1</span>
               <span class="text-xs text-gray-400 font-medium tracking-wide">one-time</span>
             </div>
             <p class="text-xs text-gray-400 dark:text-gray-500 mb-6">Best for: Surviving the first 2 years.</p>
             
-            <a href="https://www.learningbox.in/checkout.php?slug=gen-z-work-toolkit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-accent-orange to-[#CC5A17] text-white font-bold hover:shadow-[0_4px_20px_rgba(255,115,30,0.4)] transition-all flex items-center justify-center gap-2 group">
-              Get Toolkit
+            <a href="product-3-checkout.php" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-accent-orange to-[#CC5A17] text-white font-bold hover:shadow-[0_4px_20px_rgba(255,115,30,0.4)] transition-all flex items-center justify-center gap-2 group">
+              View Product 3
               <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </a>
           </div>
@@ -266,4 +270,10 @@
 
 
 
+<script>
+  // Keep Product 2's displayed price at the promotional INR 1 amount.
+  const productTwoCard = document.querySelector('a[href*="digital-playbook-for-managers"]')?.closest('div.flex.flex-col');
+  const productTwoPrice = productTwoCard?.querySelector('.text-3xl');
+  if (productTwoPrice) productTwoPrice.textContent = String.fromCharCode(8377) + '1';
+</script>
 </body></html>

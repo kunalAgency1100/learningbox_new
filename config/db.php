@@ -15,7 +15,9 @@ $db_pass = $db_pass === false
     : $db_pass;
 
 // Local PHP development server settings; production keeps the configured values above.
-if (in_array($_SERVER['HTTP_HOST'] ?? '', ['127.0.0.1:8000', 'localhost:8000'], true)) {
+$requestHost = strtolower((string) ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? ''));
+$requestHost = preg_replace('/:\d+$/', '', $requestHost);
+if (PHP_OS_FAMILY === 'Windows' || in_array($requestHost, ['127.0.0.1', 'localhost'], true)) {
     $db_host = '127.0.0.1';
     $db_name = 'learningbox';
     $db_user = 'root';

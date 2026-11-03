@@ -6,8 +6,16 @@ header('Referrer-Policy: no-referrer');
 try {
     $action = is_string($_GET['action'] ?? null) ? $_GET['action'] : '';
     $data = null;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Five Server's local PHP bridge does not populate REQUEST_METHOD, so
+    // infer POST from the JSON body when the standard server variable is absent.
+    $raw = null;
+    $requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+    if ($requestMethod === null) {
         $raw = file_get_contents('php://input', false, null, 0, 8193);
+        $requestMethod = $raw !== '' ? 'POST' : 'GET';
+    }
+    if ($requestMethod === 'POST') {
+        $raw ??= file_get_contents('php://input', false, null, 0, 8193);
         if (strlen($raw) > 8192) throw new InvalidArgumentException('Request too large.');
         $data = json_decode($raw, true);
         if (!is_array($data)) throw new InvalidArgumentException('Send a JSON object.');
@@ -19,7 +27,7 @@ try {
         throw new InvalidArgumentException('Unknown endpoint.');
     }
     $method = $action === 'status' ? 'GET' : 'POST';
-    if ($_SERVER['REQUEST_METHOD'] !== $method) {
+    if ($requestMethod !== $method) {
         header('Allow: ' . $method);
         http_response_code(405);
         throw new InvalidArgumentException('Method not allowed.');
@@ -46,6 +54,9 @@ try {
         if ($productOnePreview) {
             $product['amount'] = 100;
             $product['name'] = 'Relationship Health Diagnostic — Product 1 Preview';
+        }
+        if (in_array($slug, ['relationship-health-diagnostic', 'digital-playbook-for-managers', 'gen-z-work-toolkit'], true)) {
+            $product['amount'] = 100;
         }
         // Reuse the session order on retries; neither price nor currency comes from the browser.
         $fingerprint = hash('sha256', json_encode([$product['id'], $product['amount'], $buyer]));

@@ -114,6 +114,8 @@ $paid = $purchase['status'] === 'paid';
             <dd><?= esc($purchase['paid_at']) ?></dd><?php endif; ?>
     </dl>
     <div class="flex flex-wrap gap-3">
+      <?php if ($paid && $purchase['product_name'] === 'Digital Playbook for Managers'): ?><a class="inline-block rounded-lg bg-accent-blue px-5 py-3 font-bold text-white" href="product-2-library.php?token=<?= esc($purchase['token']) ?>">Read and download Product 2</a><?php endif; ?>
+      <?php if ($paid && $purchase['product_name'] === 'Gen Z @ Work Toolkit'): ?><a class="inline-block rounded-lg bg-accent-orange px-5 py-3 font-bold text-white" style="background:#FF731E;color:white" href="product-3-library.php?token=<?= esc($purchase['token']) ?>">Read and download Product 3</a><?php endif; ?>
       <a class="inline-block rounded-lg bg-primary px-5 py-3 font-bold text-brand-navy" href="products.php">Browse products</a>
       <a href="contact.html" class="inline-block rounded-lg px-2 py-3 underline">Contact support</a>
     </div>
