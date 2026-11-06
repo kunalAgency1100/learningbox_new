@@ -51,8 +51,13 @@ form.addEventListener('submit', async event => {
                 message.textContent = 'Confirming your payment…';
                 let paymentConfirmed = false;
                 try {
-                    await paymentApi('verify', {...result, token: order.token});
-                    paymentConfirmed = true;
+                    const verified = await paymentApi('verify', {...result, token: order.token});
+                    // Only open the protected library after the server confirms
+                    // that the payment has been fully captured.
+                    paymentConfirmed = verified.status === 'paid';
+                    if (!paymentConfirmed) {
+                        message.textContent = 'Payment received. We are waiting for final confirmation...';
+                    }
                 } catch (error) {
                     message.textContent = 'Confirmation is taking longer than expected. Opening your purchase status…';
                 }

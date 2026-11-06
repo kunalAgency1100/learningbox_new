@@ -95,6 +95,16 @@ try {
         if (!is_string($paymentId) || !preg_match('/^pay_[A-Za-z0-9]+$/D', $paymentId) || !is_string($signature) || ($data['razorpay_order_id'] ?? '') !== $purchase['razorpay_order_id'] || !valid_signature($purchase['razorpay_order_id'] . '|' . $paymentId, $signature, commerce_config()['key_secret'])) throw new InvalidArgumentException('Payment verification failed.');
         $payment = razorpay('GET', 'payments/' . rawurlencode($paymentId));
         if (!payment_matches($purchase, $payment) || ($payment['id'] ?? '') !== $paymentId) throw new RuntimeException('Payment mismatch.');
+        // Razorpay may return an authorized payment when automatic capture is
+        // disabled or delayed. Capture it here so the buyer can receive the
+        // protected Product 2 files immediately after a successful checkout.
+        if (($payment['status'] ?? '') === 'authorized') {
+            $payment = razorpay('POST', 'payments/' . rawurlencode($paymentId) . '/capture', [
+                'amount' => (int)$purchase['amount'],
+                'currency' => $purchase['currency'],
+            ]);
+            if (!payment_matches($purchase, $payment) || ($payment['id'] ?? '') !== $paymentId) throw new RuntimeException('Payment capture mismatch.');
+        }
         apply_payment($pdo, $payment);
         $purchase = purchase_by_token($pdo, $purchase['token']);
         echo json_encode(['success' => true, 'status' => $purchase['status']]);
