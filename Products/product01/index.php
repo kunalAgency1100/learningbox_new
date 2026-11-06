@@ -44,23 +44,13 @@ header('Cache-Control: no-store');
             <button id="report-button" type="button" class="mt-6 flex w-full items-center justify-center rounded-xl bg-brand-navy px-5 py-4 font-bold text-white transition hover:bg-accent-blue sm:w-fit">
               See Personalised Insight Report · INR 1
             </button>
-            <p class="mt-3 text-xs text-gray-500">Payment is required before the personalised report form opens.</p>
+            <p class="mt-3 text-xs text-gray-500">Payment is required before your personalised report is prepared.</p>
           </div>
         </section>
 
-        <section id="google-form" class="hidden overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm" aria-labelledby="google-form-heading">
-          <div class="h-1.5 bg-gradient-to-r from-accent-blue to-brand-navy"></div>
-          <div class="p-6 sm:p-8">
-            <p class="text-xs font-bold uppercase tracking-widest text-accent-orange">Step 2</p>
-            <h2 id="google-form-heading" class="mt-2 font-display text-2xl font-bold text-brand-navy">Complete the Product 1 form</h2>
-            <p class="mt-3 text-sm leading-6 text-gray-500">Submit the form below, then continue to the INR 1 verification payment.</p>
-            <iframe title="Product 1 Google Form" src="https://docs.google.com/forms/d/1WRr4K0HnhTzzEvXnwEMtuRFreTHoOpJFMd63v0K3CM8/viewform?embedded=true" class="mt-6 h-[900px] w-full rounded-2xl border border-gray-200">Loading…</iframe>
-          </div>
-        </section>
-
-        <form id="purchase-form" class="hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8" data-slug="product01" data-api-base="../../api/payments.php" data-status-base="../../payment-success.php" data-success-url="https://docs.google.com/forms/d/1WRr4K0HnhTzzEvXnwEMtuRFreTHoOpJFMd63v0K3CM8/viewform" data-csrf="<?= esc($_SESSION['commerce_csrf']) ?>" aria-labelledby="details-heading">
+        <form id="purchase-form" class="hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8" data-slug="product01" data-api-base="../../api/payments.php" data-status-base="../../payment-success.php" data-csrf="<?= esc($_SESSION['commerce_csrf']) ?>" aria-labelledby="details-heading">
           <div class="border-b border-gray-100 pb-6">
-            <p class="text-xs font-bold uppercase tracking-widest text-accent-orange">Step 3</p>
+            <p class="text-xs font-bold uppercase tracking-widest text-accent-orange">Step 2</p>
             <h2 id="details-heading" class="mt-2 font-display text-2xl font-bold text-brand-navy">Request the ₹1 payment</h2>
             <p class="mt-3 text-sm leading-6 text-gray-500">Enter your details. Razorpay will open after you submit the form. The amount is fixed server-side at ₹1.</p>
           </div>
