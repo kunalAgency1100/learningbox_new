@@ -5,10 +5,10 @@ header('Cache-Control: no-store');
 require __DIR__ . '/config/db.php';
 
 $token = is_string($_GET['token'] ?? null) ? $_GET['token'] : '';
-$stmt = $pdo->prepare('SELECT * FROM purchases WHERE token=? LIMIT 1');
+$stmt = $pdo->prepare('SELECT p.*, pr.slug AS product_slug FROM purchases p JOIN products pr ON pr.id=p.product_id WHERE p.token=? LIMIT 1');
 $stmt->execute([$token]);
 $purchase = $stmt->fetch();
-if (!$purchase || $purchase['status'] !== 'paid' || $purchase['product_name'] !== 'Digital Playbook for Managers') {
+if (!$purchase || $purchase['status'] !== 'paid' || $purchase['product_slug'] !== 'digital-playbook-for-managers') {
     http_response_code(403);
     page_start('Product 2 access unavailable');
     ?>

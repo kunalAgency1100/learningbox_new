@@ -16,10 +16,10 @@ if (!preg_match('/^[a-f0-9]{64}$/D', $token) || !isset($files[$file])) {
     exit('File not found.');
 }
 
-$stmt = $pdo->prepare('SELECT p.status, p.product_name FROM purchases p WHERE p.token=? LIMIT 1');
+$stmt = $pdo->prepare('SELECT p.status, p.product_name, pr.slug AS product_slug FROM purchases p JOIN products pr ON pr.id=p.product_id WHERE p.token=? LIMIT 1');
 $stmt->execute([$token]);
 $purchase = $stmt->fetch();
-if (!$purchase || $purchase['status'] !== 'paid' || $purchase['product_name'] !== 'Digital Playbook for Managers') {
+if (!$purchase || $purchase['status'] !== 'paid' || $purchase['product_slug'] !== 'digital-playbook-for-managers') {
     http_response_code(403);
     exit('This file is available after payment confirmation.');
 }

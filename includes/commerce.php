@@ -117,7 +117,7 @@ function apply_payment(PDO $pdo, array $payment): void {
 }
 function purchase_by_token(PDO $pdo, string $token): array {
     if (!preg_match('/^[a-f0-9]{64}$/D', $token)) throw new InvalidArgumentException('Purchase not found.');
-    $stmt = $pdo->prepare('SELECT * FROM purchases WHERE token=?');
+    $stmt = $pdo->prepare('SELECT p.*, pr.slug AS product_slug FROM purchases p JOIN products pr ON pr.id=p.product_id WHERE p.token=?');
     $stmt->execute([$token]);
     $purchase = $stmt->fetch();
     if (!$purchase) throw new InvalidArgumentException('Purchase not found.');
