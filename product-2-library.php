@@ -11,8 +11,26 @@ $purchase = $stmt->fetch();
 if (!$purchase || $purchase['status'] !== 'paid' || $purchase['product_name'] !== 'Digital Playbook for Managers') {
     http_response_code(403);
     page_start('Product 2 access unavailable');
-    echo '<p class="mb-4">Please complete and confirm your Product 2 payment before opening the playbook library.</p>';
-    echo '<a href="checkout.php?slug=digital-playbook-for-managers" class="underline">Return to Product 2 checkout</a>';
+    ?>
+    <section class="mx-auto max-w-2xl" aria-labelledby="access-message">
+      <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <div class="bg-brand-navy px-6 py-8 text-white sm:px-10 sm:py-10">
+          <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-brand-navy" aria-hidden="true">
+            <span class="material-symbols-outlined text-3xl">lock</span>
+          </div>
+          <p class="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-blue-200">Playbook library</p>
+          <h2 id="access-message" class="font-display text-2xl font-bold sm:text-3xl">Product 2 access unavailable</h2>
+        </div>
+        <div class="px-6 py-8 sm:px-10 sm:py-9">
+          <p class="max-w-xl text-lg leading-8 text-slate-600">Please complete and confirm your Product 2 payment before opening the playbook library.</p>
+          <a href="checkout.php?slug=digital-playbook-for-managers" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-brand-navy transition hover:bg-primary-hover hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-200">
+            Return to Product 2 checkout
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <?php
     page_end();
     exit;
 }
