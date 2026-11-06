@@ -14,23 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             elseif ($delivery['busy']) $message = 'Email delivery is already running. Please check again shortly.';
             else $message = $delivery['sent'] . ' email(s) accepted by the mail server; ' . $delivery['failed'] . ' failed. If accepted emails do not arrive, check cPanel Track Delivery.';
         } elseif (($_POST['action'] ?? '') === 'reconcile') {
-            $stmt = $pdo->prepare('SELECT * FROM purchases WHERE id=?'); $stmt->execute([$id]); $purchase = $stmt->fetch();
-            if (!$purchase || !$purchase['razorpay_order_id']) throw new InvalidArgumentException('No gateway order is available for this purchase.');
-            $payments = razorpay('GET', 'orders/' . rawurlencode($purchase['razorpay_order_id']) . '/payments');
-            foreach ($payments['items'] ?? [] as $payment) apply_payment($pdo, $payment);
-            $message = 'Purchase status refreshed from Razorpay.';
-        }
-    } catch (InvalidArgumentException $e) { $message = $e->getMessage(); }
-    catch (Throwable $e) { error_log('Admin payments: ' . $e->getMessage()); $message = 'Unable to complete the action. Please try again.'; }
-}
-$states = ['creating','creation_failed','pending','authorized','failed','paid'];
-$status = in_array($_GET['status'] ?? '', $states, true) ? $_GET['status'] : '';
-$search = is_string($_GET['q'] ?? null) ? substr(trim($_GET['q']),0,180) : '';
-$where = []; $params = [];
-if ($status) { $where[] = 'p.status=?'; $params[] = $status; }
-if ($search !== '') { $where[] = '(p.buyer_name LIKE ? OR p.buyer_email LIKE ? OR p.buyer_phone LIKE ? OR p.razorpay_order_id=? OR p.razorpay_payment_id=?)'; $params = array_merge($params, ['%'.$search.'%','%'.$search.'%','%'.$search.'%',$search,$search]); }
-$sqlWhere = $where ? ' WHERE ' . implode(' AND ', $where) : '';
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM purchases p' . $sqlWhere); $stmt->execute($params); $total = (int)$stmt->fetchColumn();
+            $stmt = $pdo->prepare('SELECT * FROM purchases WHERE id=?'); $stmt->execute([$id]); $            ) throw new InvalidArgumentException('No gateway order is available for this purchase.');
+                                                          $total = (int)$stmt->fetchColumn();
 $page = max(1,min(max(1,(int)ceil($total/25)),(int)($_GET['page'] ?? 1))); $offset = ($page-1)*25;
 $stmt = $pdo->prepare("SELECT p.*, (SELECT GROUP_CONCAT(CONCAT(recipient_type, ': ', status, ' (', attempts, ')') SEPARATOR ' / ') FROM payment_emails e WHERE e.purchase_id=p.id) AS emails FROM purchases p" . $sqlWhere . " ORDER BY p.created_at DESC LIMIT 25 OFFSET $offset"); $stmt->execute($params); $purchases=$stmt->fetchAll();
 page_start('Payment records', true); ?>
